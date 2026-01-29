@@ -1,0 +1,34 @@
+{
+  "sessions": [
+    {
+      "token": "5d440f17-12bf-40e7-91c8-7ebd6ef55a9d",
+      "username": "t",
+      "live": "2026-01-28T21:58:47.262Z"
+    },
+    {
+      "token": "2db0f8fb-fe88-4b96-9376-804910b9e3a3",
+      "username": "rh",
+      "live": "2026-01-28T21:59:28.059Z"
+    },
+    {
+      "token": "ae6ed853-33ff-48b0-94ab-dc3783ed3877",
+      "username": "paytonjh",
+      "live": "2026-01-28T22:03:50.783Z"
+    },
+    {
+      "token": "7551c6b9-1b31-4ada-8e1e-9ec6783e2b76",
+      "username": "t",
+      "live": "2026-01-28T22:06:59.144Z"
+    },
+    {
+      "token": "ac664d25-857f-40d3-bc80-ad45fbd03a78",
+      "username": "rh",
+      "live": "2026-01-28T22:09:05.245Z"
+    },
+    {
+      "token": "d6f9ad10-4dd6-44ac-8ab2-6389c8546b26",
+      "username": "paytonjh",
+      "live": "2026-01-28T22:27:15.906Z"
+    }
+  ]
+}

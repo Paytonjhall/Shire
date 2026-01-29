@@ -1,0 +1,66 @@
+// Prisma schema for SHIRE
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id       Int    @id @default(autoincrement())
+  name     String
+  username String @unique
+  password String
+  level    String
+}
+
+model Session {
+  token    String   @id
+  username String
+  live     DateTime
+}
+
+model EligibilityRule {
+  id              Int   @id @default(autoincrement())
+  minAge          Int
+  minCreditHours  Int
+  allowedCountries String
+}
+
+model Applicant {
+  id              String  @id
+  name            String
+  studentId       String  @unique
+  position        String
+  eligibilityKey  String?
+  eligibilityText String?
+  address         String
+  age             Int
+  birthday        String
+  citizenshipISO3 String
+  email           String
+  appliedAt       String
+  visa            String
+  status          String
+  decidedAt       String?
+  decidedBy       String?
+  creditHours     Int
+}
+
+model Employee {
+  id                 String  @id
+  name               String
+  studentId          String  @unique
+  position           String
+  hourlyPay          Float
+  hireDate           String
+  supervisor         String
+  email              String
+  phone              String
+  maxHoursPerWeek    Int
+  workedHoursPerWeek Int
+  workStatus         String
+}

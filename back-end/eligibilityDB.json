@@ -1,0 +1,9 @@
+{
+  "minAge": 18,
+  "minCreditHours": 15,
+  "allowedCountries": [
+    "USA",
+    "CAN",
+    "MEX"
+  ]
+}

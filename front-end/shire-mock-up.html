@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SHIRE – Admin Portal</title>
+    <link rel="stylesheet" href="shire-mock-up.css" />
+</head>
+
+<body>
+<div class="auth" id="loginScreen" aria-label="Login">
+    <div class="auth-card">
+        <div class="auth-brand">
+            <div class="auth-logo">🎓</div>
+            <div class="auth-title">SHIRE</div>
+        </div>
+        <form class="auth-form" id="loginForm">
+            <label class="auth-label" for="loginUsername">Username</label>
+            <input class="auth-input" id="loginUsername" type="text" autocomplete="username" required />
+            <label class="auth-label" for="loginPassword">Password</label>
+            <input class="auth-input" id="loginPassword" type="password" autocomplete="current-password" required />
+            <button class="btn primary auth-submit" id="loginSubmit" type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+<div class="app hidden" id="appShell">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo">🎓</div>
+            <div class="name">SHIRE</div>
+        </div>
+
+        <nav class="nav" aria-label="Primary">
+            <a data-view="dashboard" href="#">Dashboard</a>
+            <a data-view="applicants" class="active" href="#" aria-current="page">Applicants</a>
+            <a data-view="approved" href="#">Approved Students</a>
+            <a data-view="denied" href="#">Denied Students</a>
+            <a data-view="employees" href="#">Student Employees</a>
+            <a data-view="settings" href="#">Settings</a>
+        </nav>
+    </aside>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="title">
+            <h1>Admin Portal</h1>
+            <span id="subtitle">Student Hiring • Applicants</span>
+        </div>
+
+        <div class="userbar">
+            <div class="userchip" title="Current user">
+                <div class="avatar" id="adminAvatar">PH</div>
+                <div class="username" id="adminName">Payton Hall</div>
+            </div>
+            <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">
+                <span class="theme-icon sun" aria-hidden="true">☀</span>
+                <span class="theme-icon moon" aria-hidden="true">☾</span>
+            </button>
+            <button class="btn primary" type="button">Settings</button>
+            <button class="btn danger" id="logoutBtn" type="button">Logout</button>
+        </div>
+    </header>
+
+    <!-- Main -->
+    <main class="main">
+
+        <!-- Applicants View -->
+        <div class="view active" id="view-applicants">
+            <div class="pagehead">
+                <div>
+                    <h2>Student Applicants</h2>
+                    <p>Filter applicants by eligibility and view individual applications.</p>
+                </div>
+            </div>
+
+            <section class="card" aria-label="Applicants list">
+                <div class="filters" aria-label="Eligibility filters">
+                    <div class="filter-left">
+                        <span class="label">Filter by Eligibility:</span>
+                        <button class="pill active" type="button" data-filter="all">All</button>
+                        <button class="pill eligible" type="button" data-filter="eligible">Eligible</button>
+                        <button class="pill actions" type="button" data-filter="actions">Actions Needed</button>
+                        <button class="pill ineligible" type="button" data-filter="ineligible">Ineligible</button>
+                    </div>
+                    <div class="filter-count">
+                        <span id="applicantsCount">Showing 0 applicants</span>
+                        <label class="page-size" for="pageSizeRange">Page size <span id="pageSizeValue">10</span></label>
+                        <input class="page-size-range" id="pageSizeRange" type="range" min="0" max="3" step="1" value="1" aria-label="Applicants page size" />
+                    </div>
+                </div>
+
+                <div class="tablewrap" role="region" aria-label="Applicants table" tabindex="0">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th class="sortable" data-table="applicants" data-key="name">
+                                <span class="sort-indicator">Name <span class="caret">↕</span></span>
+                            </th>
+                            <th class="sortable" data-table="applicants" data-key="studentId">
+                                <span class="sort-indicator">Student ID <span class="caret">↕</span></span>
+                            </th>
+                            <th class="sortable" data-table="applicants" data-key="position">
+                                <span class="sort-indicator">Position <span class="caret">↕</span></span>
+                            </th>
+                            <th class="sortable" data-table="applicants" data-key="appliedAt">
+                                <span class="sort-indicator">Applied Date/Time <span class="caret">↕</span></span>
+                            </th>
+                            <th class="sortable" data-table="applicants" data-key="eligibilityKey">
+                                <span class="sort-indicator">Eligibility <span class="caret">↕</span></span>
+                            </th>
+                            <th>View</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody-applicants"></tbody>
+                    </table>
+                </div>
+
+                <div class="pagination" id="applicantsPagination" aria-label="Pagination"></div>
+            </section>
+        </div>
+
+        <!-- Approved View -->
+        <div class="view" id="view-approved">
+            <div class="pagehead">
+                <div>
+                    <h2>Approved Students</h2>
+                    <p>Students approved by an administrator (read-only list).</p>
+                </div>
+            </div>
+
+            <section class="card" aria-label="Approved students list">
+                <div class="tablewrap" role="region" aria-label="Approved table" tabindex="0">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th class="sortable" data-table="approved" data-key="name">
+                                <span class="sort-indicator">Name <span class="caret">↕</span></span>
+                            </th>
+                            <th class="sortable" data-table="approved" data-key="studentId">
+                                <span class="sort-indicator">Student ID <span class="caret">↕</span></span>
+                            </th>
+                            <th class="sortable" data-table="approved" data-key="position">
+                                <span class="sort-indicator">Position <span class="caret">↕</span></span>
+                            </th>
+                            <th class="sortable" data-table="approved" data-key="decidedBy">
+                                <span class="sort-indicator">Decided By <span class="caret">↕</span></span>
+                            </th>
+                            <th class="sortable" data-table="approved" data-key="decidedAt">
+                                <span class="sort-indicator">Decided Date/Time <span class="caret">↕</span></span>
+                            </th>
+                            <th class="sortable" data-table="approved" data-key="eligibilityKey">
+                                <span class="sort-indicator">Eligibility <span class="caret">↕</span></span>
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody-approved"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- Denied View -->
+        <div class="view" id="view-denied">
+            <div class="pagehead">
+                <div>
+                    <h2>Denied Students</h2>
+                    <p>Students denied by an administrator (read-only list).</p>
+                </div>
+            </div>
+
+            <section class="card" aria-label="Denied students list">
+                <div class="tablewrap" role="region" aria-label="Denied table" tabindex="0">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th class="sortable" data-table="denied" data-key="name">
+                                <span class="sort-indicator">Name <span class="caret">↕</span></span>
+                            </th>
+                            <th class="sortable" data-table="denied" data-key="studentId">
+                                <span class="sort-indicator">Student ID <span class="caret">↕</span></span>
+                            </th>
+                            <th class="sortable" data-table="denied" data-key="position">
+                                <span class="sort-indicator">Position <span class="caret">↕</span></span>
+                            </th>
+                            <th class="sortable" data-table="denied" data-key="decidedBy">
+                                <span class="sort-indicator">Decided By <span class="caret">↕</span></span>
+                            </th>
+                            <th class="sortable" data-table="denied" data-key="decidedAt">
+                                <span class="sort-indicator">Decided Date/Time <span class="caret">↕</span></span>
+                            </th>
+                            <th class="sortable" data-table="denied" data-key="eligibilityKey">
+                                <span class="sort-indicator">Eligibility <span class="caret">↕</span></span>
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody-denied"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- Dashboard (placeholder) -->
+        <div class="view" id="view-dashboard">
+            <div class="pagehead">
+                <div>
+                    <h2>Dashboard</h2>
+                    <p>Overview of current applicant eligibility counts.</p>
+                </div>
+            </div>
+            <section class="card">
+                <div class="dashboard-cards">
+                    <div class="dash-card dash-eligible">
+                        <div class="dash-label">Eligible</div>
+                        <div class="dash-value" id="dashEligible">0</div>
+                    </div>
+                    <div class="dash-card dash-actions">
+                        <div class="dash-label">Needs Action</div>
+                        <div class="dash-value" id="dashActions">0</div>
+                    </div>
+                    <div class="dash-card dash-ineligible">
+                        <div class="dash-label">Ineligible</div>
+                        <div class="dash-value" id="dashIneligible">0</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Settings (placeholder) -->
+        <div class="view" id="view-settings">
+            <div class="pagehead">
+                <div>
+                    <h2>Settings</h2>
+                    <p>Manage eligibility requirements for applicants.</p>
+                </div>
+            </div>
+            <section class="card settings-section" aria-label="Eligibility requirements">
+                <form class="settings-form" id="eligibilityForm">
+                    <label class="settings-label" for="minAgeInput">Minimum age</label>
+                    <input class="settings-input" id="minAgeInput" type="number" min="0" step="1" required />
+
+                    <label class="settings-label" for="minCreditsInput">Minimum credit hours</label>
+                    <input class="settings-input" id="minCreditsInput" type="number" min="0" step="1" required />
+
+                    <label class="settings-label" for="allowedCountriesInput">Allowed countries (ISO3, comma separated)</label>
+                    <textarea class="settings-textarea" id="allowedCountriesInput" rows="4" placeholder="USA, MEX, CAN" required></textarea>
+
+                    <div class="settings-actions">
+                        <button class="btn primary" type="submit">Save Eligibility Rules</button>
+                        <span class="settings-note">Only superadmins can update these rules.</span>
+                    </div>
+                </form>
+            </section>
+            <section class="card settings-section" aria-label="Admin management">
+                <form class="settings-form" id="adminForm">
+                    <label class="settings-label" for="adminNameInput">Name</label>
+                    <input class="settings-input" id="adminNameInput" type="text" required />
+
+                    <label class="settings-label" for="adminUsernameInput">Username</label>
+                    <input class="settings-input" id="adminUsernameInput" type="text" required />
+
+                    <label class="settings-label" for="adminPasswordInput">Password</label>
+                    <input class="settings-input" id="adminPasswordInput" type="password" required />
+
+                    <label class="settings-label" for="adminLevelSelect">Level</label>
+                    <select class="settings-input" id="adminLevelSelect" required>
+                        <option value="readonly">read only</option>
+                        <option value="admin">admin</option>
+                        <option value="superadmin">super admin</option>
+                    </select>
+
+                    <div class="settings-actions">
+                        <button class="btn primary" type="submit">Add Admin</button>
+                        <span class="settings-note">Only superadmins can add or remove admins.</span>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        <!-- Student Employees View -->
+        <div class="view" id="view-employees">
+            <div class="pagehead">
+                <div>
+                    <h2>Student Employees</h2>
+                    <p>Current student employees and role details.</p>
+                </div>
+            </div>
+            <section class="card" aria-label="Student employees list">
+                <div class="tablewrap" role="region" aria-label="Student employees table" tabindex="0">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Position</th>
+                            <th>Hours Used</th>
+                            <th>Status</th>
+                            <th>View</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody-employees"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+    </main>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true">
+    <span class="toast-text" id="toastText">Unable to get data.</span>
+    <button class="btn" id="toastAction" type="button">try again?</button>
+</div>
+
+<!-- Modal -->
+<div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-header">
+            <div class="left">
+                <div class="initials" id="modalInitials">JS</div>
+                <h3 class="modal-title" id="modalTitle">Student Name</h3>
+            </div>
+            <button class="modal-close" id="modalCloseBtn" type="button" aria-label="Close">×</button>
+        </div>
+
+        <div class="modal-body">
+            <div class="info-grid">
+                <div class="field">
+                    <div class="k">Address</div>
+                    <div class="v" id="mAddress">—</div>
+                </div>
+                <div class="field">
+                    <div class="k">Age</div>
+                    <div class="v" id="mAge">—</div>
+                </div>
+
+                <div class="field">
+                    <div class="k">Credit Hours</div>
+                    <div class="v" id="mCreditHours">—</div>
+                </div>
+                <div class="field">
+                    <div class="k">Birthday</div>
+                    <div class="v mono" id="mBirthday">—</div>
+                </div>
+                <div class="field">
+                    <div class="k">Student ID</div>
+                    <div class="v mono" id="mStudentId">—</div>
+                </div>
+
+                <div class="field">
+                    <div class="k">Citizenship (ISO3)</div>
+                    <div class="v mono" id="mCitizenship">—</div>
+                </div>
+                <div class="field elig">
+                    <div class="k">Eligibility</div>
+                    <div class="v" id="mEligibility">—</div>
+                </div>
+
+                <div class="field" style="grid-column: 1 / -1;">
+                    <div class="k">Email</div>
+                    <div class="v" id="mEmail">—</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-actions">
+            <div class="actions-row">
+                <button class="btn primary" id="acceptBtn" type="button">Accept</button>
+                <button class="btn danger" id="denyBtn" type="button">Deny</button>
+            </div>
+
+            <div class="message-box" aria-label="Send message section">
+                <textarea id="messageText" placeholder="Send Message (this will email the student)…"></textarea>
+                <button class="btn" id="sendBtn" type="button">Send Message</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Employee Modal -->
+<div class="modal-backdrop" id="employeeModalBackdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="employeeModalTitle">
+        <div class="modal-header">
+            <div class="left">
+                <div class="initials" id="employeeInitials">SE</div>
+                <h3 class="modal-title" id="employeeModalTitle">Student Employee</h3>
+            </div>
+            <button class="modal-close" id="employeeModalCloseBtn" type="button" aria-label="Close">×</button>
+        </div>
+
+        <div class="modal-body">
+            <div class="info-grid">
+                <div class="field">
+                    <div class="k">Student ID</div>
+                    <div class="v mono" id="eStudentId">—</div>
+                </div>
+                <div class="field">
+                    <div class="k">Position</div>
+                    <div class="v" id="ePosition">—</div>
+                </div>
+
+                <div class="field">
+                    <div class="k">Hourly Pay</div>
+                    <div class="v mono" id="ePay">—</div>
+                </div>
+                <div class="field">
+                    <div class="k">Hire Date</div>
+                    <div class="v mono" id="eHireDate">—</div>
+                </div>
+
+                <div class="field">
+                    <div class="k">Supervisor</div>
+                    <div class="v" id="eSupervisor">—</div>
+                </div>
+                <div class="field">
+                    <div class="k">Email</div>
+                    <div class="v" id="eEmail">—</div>
+                </div>
+
+                <div class="field">
+                    <div class="k">Phone</div>
+                    <div class="v" id="ePhone">—</div>
+                </div>
+                <div class="field">
+                    <div class="k">Max Hours / Week</div>
+                    <div class="v mono" id="eMaxHours">—</div>
+                </div>
+                <div class="field">
+                    <div class="k">Worked Hours / Week</div>
+                    <div class="v mono" id="eWorkedHours">—</div>
+                </div>
+                <div class="field">
+                    <div class="k">Work Status</div>
+                    <div class="v" id="eWorkStatus">—</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-actions">
+            <div class="actions-row">
+                <input class="settings-input pay-input" id="payIncreaseInput" type="number" min="0" step="0.25" placeholder="Pay increase ($)" />
+                <button class="btn primary" id="raisePayBtn" type="button">Increase Pay</button>
+                <button class="btn danger" id="fireBtn" type="button">Fire Student</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="shire-mock-up.js"></script>
+</body>
+</html>

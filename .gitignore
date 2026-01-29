@@ -1,0 +1,19 @@
+# dependencies
+node_modules/
+
+# prisma sqlite db
+back-end/dev.db
+back-end/dev.db-journal
+back-end/prisma/dev.db
+back-end/prisma/dev.db-journal
+
+# env
+.env
+
+# system/ide
+.DS_Store
+.idea/
+*.iml
+
+# logs
+npm-debug.log*

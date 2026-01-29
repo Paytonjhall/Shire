@@ -1,0 +1,32 @@
+{
+  "admins": [
+    {
+      "id": 1,
+      "name": "Payton Hall",
+      "username": "paytonjh",
+      "password": "123",
+      "level": "superadmin"
+    },
+    {
+      "id": 2,
+      "name": "Julian Hall",
+      "username": "julesjh",
+      "password": "123",
+      "level": "superadmin"
+    },
+    {
+      "id": 3,
+      "name": "Rhett",
+      "username": "rh",
+      "password": "123",
+      "level": "admin"
+    },
+    {
+      "id": 4,
+      "name": "temp",
+      "username": "t",
+      "password": "t",
+      "level": "readonly"
+    }
+  ]
+}
