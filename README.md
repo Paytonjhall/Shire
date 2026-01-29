@@ -3,6 +3,8 @@
 ## What is this repo
 SHIRE is a lightweight admin portal prototype for managing student applicants and student employees. It includes a frontend dashboard with tables, filters, and modals, plus a backend API with authentication, authorization, and data persistence.
 
+I wrote this entire repo using codex. I made very minimal changes to the code at some points. 99% of the code was written by AI. I outlined API specs, database schema, and UI structure, and codex generated the implementation.
+
 ## What this repo does
 - Provides an admin UI to review applicants, approve/deny, and reopen decisions.
 - Manages eligibility rules (age, credit hours, citizenship, visa) with a settings panel.
