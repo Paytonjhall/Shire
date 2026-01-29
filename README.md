@@ -17,10 +17,38 @@ I wrote this entire repo using codex. I made very minimal changes to the code at
    - `cd back-end && npm install`
 2. Run database migrations and seed data:
    - `npx prisma migrate dev`
-   - `node scripts/seed-from-json.js`
+   - `npm run seed`
 3. Start the backend:
    - `npm start`
 4. Open the frontend:
    - Open `front-end/shire-mock-up.html` in a browser
 
 Optional: If you want to reset data, re-run `node scripts/seed-from-json.js`.
+
+## API
+All protected endpoints require a session token header:
+- `x-session-token: <token>`
+
+Auth:
+- `PUT /login` → returns `{ token, live, name, level, username }`
+
+Applicants:
+- `GET /getAllUndecidedStudents`
+- `GET /getAllAcceptedStudents`
+- `GET /getAllDeniedStudents`
+- `PUT /acceptStudent`
+- `PUT /denyStudent`
+- `PUT /reopenStudent`
+
+Eligibility rules:
+- `GET /getEligibilityRequirements`
+- `PUT /modifyEligibilityRequirements` (superadmin only)
+
+Admins:
+- `PUT /addAdmin` (superadmin only)
+- `DELETE /removeAdmin` (superadmin only)
+
+Student employees:
+- `GET /getStudentEmployees`
+- `PUT /increasePay`
+- `DELETE /fireStudent`
